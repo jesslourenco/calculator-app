@@ -3,48 +3,6 @@ let operatorState;
 let num1;
 let num2;
 
-// Layout Builder functions 
-
-function createRow() {
-    const div_row = document.createElement('div');
-    div_row.className = 'row';
-    return div_row;
-}
-
-function createCol() {
-    let div_col = document.createElement('div');
-    div_col.className += 'col btn-std';
-    return div_col;
-}
-
-function createGrid() {
-    const rowNum = 4;
-    const colNum = 4;
-    const container = document.querySelector('#buttons-grid');
-    let index = 0;
-    for (let i = 0; i < rowNum; i++) {
-        const row = createRow();
-        for (let j = 0; j < colNum; j++) {
-            const col = createCol();
-            row.appendChild(col);
-            let item = addButtonItem(index);
-            col.innerHTML += item;
-            col.addEventListener('click', () => handleButtonClick(item));
-            
-            if (index === 3) { col.className += ' btn-fontStyles btn-resetDel';} 
-            if (index === 12) { col.id = 'decimalSeparator'; }
-            if (index === 7 || index === 11 || index === 14 || index === 15) { col.className += ' btn-operators'; }
-            index++;
-        }
-        container.appendChild(row);
-    }
-}
-
-function addButtonItem(index){
-    const items = [7, 8, 9, 'DEL', 4, 5, 6, '+', 1, 2, 3, '-', '.', 0, '/', 'x'];
-    return items[index];
-}
-
 // CSS Event Functions
 function themeSelection(){
     let selection;
@@ -57,7 +15,6 @@ function themeSelection(){
     }
     moveToggle(selection);
     chooseTheme(selection);
-
 }
 
 function moveToggle(selection){
@@ -104,7 +61,8 @@ function classicTheme(){
 
 /// Calculator functions ///
 
-function handleButtonClick(value){ 
+function handleButtonClick(value){
+    console.log(value);
 
     const operators = ['x', '/', '+', '-'];
     let digitsOnScreen = document.getElementById('screen').innerHTML;
@@ -246,4 +204,4 @@ function deletevalue(){
     showOnScreen(digits);
 }
 
-createGrid();
+

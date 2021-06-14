@@ -60,13 +60,37 @@
             <div id="calc-body-container">
                 <div id="buttons-grid">
                     <div class="last-row row">
-                        <div class="col btn-fontStyles btn-resetDel" onclick="handleButtonClick('RESET')">
+                        <button class="col btn-fontStyles btn-resetDel" onclick="handleButtonClick('RESET')">
                             RESET
-                        </div>
-                        <div class="col btn-fontStyles btn-equal" onclick="handleButtonClick('=')"> 
+                        </button>
+                        <button class="col btn-fontStyles btn-equal" onclick="handleButtonClick('=')"> 
                             = 
-                        </div>  
+                        </button> 
+                    </div>
+                    <div class="row">
+                        <button class="col btn-std" onclick="handleButtonClick('7')">7</button> 
+                        <button class="col btn-std" onclick="handleButtonClick('8')">8</button> 
+                        <button class="col btn-std" onclick="handleButtonClick('9')">9</button>
+                        <button class="col btn-std btn-fontStyles btn-resetDel" onclick="handleButtonClick('DEL')">DEL</button>
                     </div> 
+                    <div class="row">
+                        <button class="col btn-std" onclick="handleButtonClick('4')">4</button>
+                        <button class="col btn-std" onclick="handleButtonClick('5')">5</button>
+                        <button class="col btn-std" onclick="handleButtonClick('6')">6</button>
+                        <button class="col btn-std btn-operators" onclick="handleButtonClick('+')">+</button>
+                    </div>
+                    <div class="row">
+                        <button class="col btn-std" onclick="handleButtonClick('1')">1</button>
+                        <button class="col btn-std" onclick="handleButtonClick('2')">2</button>
+                        <button class="col btn-std" onclick="handleButtonClick('3')">3</button>
+                        <button class="col btn-std btn-operators" onclick="handleButtonClick('-')">-</button>
+                    </div>
+                    <div class="row">
+                        <button id="decimalSeparator"class="col btn-std" onclick="handleButtonClick('.')">.</button>
+                        <button class="col btn-std" onclick="handleButtonClick('0')">0</button>
+                        <button class="col btn-std btn-operators" onclick="handleButtonClick('/')">/</button>
+                        <button class="col btn-std btn-operators" onclick="handleButtonClick('x')">x</button>
+                    </div>
                 </div>
             </div>          
         </div>
