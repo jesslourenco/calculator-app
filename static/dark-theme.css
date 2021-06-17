@@ -52,3 +52,7 @@
     background-color: #56077C;
     box-shadow: inset 0px -4px 0px #BE15F4;
 }
+
+.theme-dark .btn-operators:focus{
+    background-color: #8631AF !important;
+}
