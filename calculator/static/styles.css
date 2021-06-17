@@ -165,6 +165,31 @@ input{
 }
 
 /*  Button styles */
+button{
+    display: inline-block;
+    border: none;
+    padding: 1rem 2rem;
+    margin: 0;
+    text-decoration: none;
+    background: #0069ed;
+    color: #ffffff;
+    font-family: 'Spartan';
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+    transition: background 250ms ease-in-out, 
+                transform 150ms ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+button:focus {
+    outline: none;
+}
+
+button:active {
+    transform: scale(0.9);
+}
 
 .btn-fontStyles{
     color:white !important;
@@ -205,6 +230,10 @@ input{
 .dot-disabled{
     pointer-events: none;
     opacity: 0.4;
+}
+
+.btn-operators:focus{
+    background-color: #FFFFFE !important;
 }
 
 
