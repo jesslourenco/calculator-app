@@ -200,11 +200,17 @@ function calculateResult(operator, num1, num2){
             result = subtract(num1, num2);
             break;
     }
+
     if (result.toString().length > 10){
         console.log('long number');
-        result = result.toFixed(9);
-    }    
+        result = handlesLongDecimals(result);        
+    } 
+       
     return result;
+}
+
+function handlesLongDecimals(result){
+    return result.toFixed(9);
 }
 
 function parseToNum(str){
