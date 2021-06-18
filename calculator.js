@@ -94,6 +94,7 @@ function handleButtonClick(value){
             setTimeout( () => { clearScreen();}, 1000);
             return;
         }
+
     }     
 }
 
@@ -115,7 +116,7 @@ function handlesNumber(value){
         btnDecSeparator.classList.remove('dot-disabled');
         clearScreen();
     }        
-    showOnScreen(value);
+    showOnScreen(value,'add');
 }
 
 function handlesOperator(value){
@@ -128,11 +129,12 @@ function handlesOperator(value){
     if (operator && num1 && num2){
         num1 = parseToNum(num1);
         num2 = parseToNum(num2);
-        const result = calculateResult(operator, num1, num2);          
+        const result = calculateResult(operator, num1, num2);
+        showOnScreen(result);
+        console.log(result);          
         num1 = String(result);
         num2 = undefined;  
     }
-
     operator = value;
     operatorState = true; 
 }
@@ -157,18 +159,24 @@ function handlesEquals(){
     num1 = parseToNum(num1);
     num2 = parseToNum(num2); 
     result = calculateResult(operator, num1, num2);
+    showOnScreen(result);
+    console.log(result);
     num1 = num2 = operator = undefined;
     operatorState = false; 
     btnDecSeparator.classList.remove('dot-disabled');
 }
 
 function handlesDecSeparator(value){
-    showOnScreen(value);
+    showOnScreen(value,'add');
     btnDecSeparator.className += ' dot-disabled';
 }
 
-function showOnScreen(value){
-    digitsOnScreen.innerHTML += value;
+function showOnScreen(value, operation='replace'){
+    if(operation === 'add'){
+        digitsOnScreen.innerHTML += value;
+    } else {
+        digitsOnScreen.innerHTML = value;
+    }
 }
 
 function calculateResult(operator, num1, num2){
@@ -195,9 +203,7 @@ function calculateResult(operator, num1, num2){
     if (result.toString().length > 10){
         console.log('long number');
         result = result.toFixed(9);
-    }
-    digitsOnScreen.innerHTML = result;
-    console.log(result);
+    }    
     return result;
 }
 
