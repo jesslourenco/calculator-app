@@ -2,7 +2,7 @@ let operator;
 let operatorState;
 let num1;
 let num2;
-//let digitsOnScreen = document.getElementById("screen").innerHTML;
+let digitsOnScreen = document.getElementById("screen");
 let btnDecSeparator = document.getElementById("decimalSeparator");
 
 
@@ -117,9 +117,9 @@ function handlesNumber(value){
 function handlesOperator(value){
 
     if (!operator){
-        num1 = document.getElementById("screen").innerHTML;
+        num1 = digitsOnScreen.innerHTML;
     }else if(num1) {
-        num2 = document.getElementById("screen").innerHTML;
+        num2 = digitsOnScreen.innerHTML;
     }
     if (operator && num1 && num2){
         const result = calculateResult(operator, num1, num2);          
@@ -137,7 +137,7 @@ function handlesReset(){
 }
 
 function handlesDelete(){
-    let digits = document.getElementById('screen').innerHTML;
+    let digits = digitsOnScreen.innerHTML;
     if (digits[digits.length-1] === '.'){
         document.getElementById("decimalSeparator").classList.remove('dot-disabled');    
     }
@@ -147,7 +147,7 @@ function handlesDelete(){
 }
 
 function handlesEquals(){
-    num2 = document.getElementById('screen').innerHTML;
+    num2 = digitsOnScreen.innerHTML;
     result = calculateResult(operator, num1, num2);
     num1 = num2 = operator = undefined;
     operatorState = false; 
@@ -160,11 +160,11 @@ function handlesDecSeparator(value){
 }
 
 function showOnScreen(value){
-    document.getElementById('screen').innerHTML += value;
+    digitsOnScreen.innerHTML += value;
 }
 
 function calculateResult(operator, num1, num2){
-    if(operator === '/' && parseInt(screenNum) === 0){
+    if(operator === '/' && parseInt(num2) === 0){
         clearScreen();
         let text = 'Infinity!';
         showOnScreen(text);
@@ -194,7 +194,7 @@ function calculateResult(operator, num1, num2){
         console.log('long number');
         result = result.toFixed(9);
     }
-    document.getElementById('screen').innerHTML = result;
+    digitsOnScreen.innerHTML = result;
     console.log(result);
     return result;
 }
@@ -231,5 +231,5 @@ function clearScreen(){
     if (operatorState){
         document.getElementById("decimalSeparator").classList.remove('dot-disabled');    
     }
-    document.getElementById('screen').innerHTML = '';
+    digitsOnScreen.innerHTML = '';
 }
