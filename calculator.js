@@ -63,28 +63,38 @@ function handleButtonClick(value){
 
     let valueType = getTypeOfValue(value);     
 
-    switch(valueType){ 
-        case 'NUMBER':
-            handlesNumber(value);
-            return;
-        case 'OPERATOR':
-            handlesOperator(value);
-            return;
-        case 'RESET':
+    try{
+        switch(valueType){ 
+            case 'NUMBER':
+                handlesNumber(value);
+                return;
+            case 'OPERATOR':
+                handlesOperator(value);
+                return;
+            case 'RESET':
+                handlesReset();
+                return;
+            case 'DEL':
+                handlesDelete();
+                return;
+            case '=':
+                handlesEquals();
+                return;
+            case '.':
+                handlesDecSeparator(value);
+                return;
+        } 
+    }catch(err){
+        console.log(err);
+        if (err === 403){
+            clearScreen();
             handlesReset();
+            let text = 'Infinity!';
+            showOnScreen(text);
+            setTimeout( () => { clearScreen();}, 1000);
             return;
-        case 'DEL':
-            handlesDelete();
-            return;
-        case '=':
-            handlesEquals();
-            return;
-        case '.':
-            handlesDecSeparator(value);
-            return;
-    }  
-    
-    return console.log("Something went wrong");
+        }
+    }     
 }
 
 function getTypeOfValue(value){
@@ -163,11 +173,7 @@ function showOnScreen(value){
 
 function calculateResult(operator, num1, num2){
     if(operator === '/' && num2 === 0){
-        clearScreen();
-        let text = 'Infinity!';
-        showOnScreen(text);
-        setTimeout( () => { clearScreen();}, 1000);
-        return;
+        throw 403        
     }
 
     let result = 0;
