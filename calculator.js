@@ -122,6 +122,8 @@ function handlesOperator(value){
         num2 = digitsOnScreen.innerHTML;
     }
     if (operator && num1 && num2){
+        num1 = parseToNum(num1);
+        num2 = parseToNum(num2);
         const result = calculateResult(operator, num1, num2);          
         num1 = String(result);
         num2 = undefined;  
@@ -148,6 +150,8 @@ function handlesDelete(){
 
 function handlesEquals(){
     num2 = digitsOnScreen.innerHTML;
+    num1 = parseToNum(num1);
+    num2 = parseToNum(num2); 
     result = calculateResult(operator, num1, num2);
     num1 = num2 = operator = undefined;
     operatorState = false; 
@@ -164,7 +168,7 @@ function showOnScreen(value){
 }
 
 function calculateResult(operator, num1, num2){
-    if(operator === '/' && parseInt(num2) === 0){
+    if(operator === '/' && num2 === 0){
         clearScreen();
         let text = 'Infinity!';
         showOnScreen(text);
@@ -172,22 +176,20 @@ function calculateResult(operator, num1, num2){
         return;
     }
 
-    let first = parseToNum(num1);
-    let second = parseToNum(num2);
     let result = 0;
 
     switch(operator){
         case '/':
-            result = divide(first,second);
+            result = divide(num1, num2);
             break;
         case 'x':
-            result = multiply(first,second);
+            result = multiply(num1, num2);
             break;
         case '+':
-            result = sum(first,second);
+            result = sum(num1, num2);
             break;
         case '-':
-            result = subtract(first,second);
+            result = subtract(num1, num2);
             break;
     }
     if (result.toString().length > 10){
