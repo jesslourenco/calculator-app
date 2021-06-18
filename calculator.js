@@ -8,16 +8,10 @@ let btnDecSeparator = document.getElementById("decimalSeparator");
 
 // CSS Event Functions for Theme Selection
 function themeSelection(){
-    let selection;
-    const options = document.getElementsByName('themes');
-    for (let option of options){
-        if (option.checked){
-            selection = option.value;
-            break;
-        }
-    }
-    moveToggle(selection);
-    chooseTheme(selection);
+
+    const selection = document.querySelector("input[name='themes']:checked");
+    moveToggle(selection.value);
+    chooseTheme(selection.value);
 }
 
 function moveToggle(selection){
