@@ -123,17 +123,14 @@ function handlesOperator(value){
 
     if (!operator){
         num1 = digitsOnScreen.innerHTML;
-    }else if(num1) {
+    }else if(num1 && !operatorState) {
         num2 = digitsOnScreen.innerHTML;
     }
     if (operator && num1 && num2){
         num1 = parseToNum(num1);
         num2 = parseToNum(num2);
         const result = calculateResult(operator, num1, num2);
-        showOnScreen(result);
-        console.log(result);          
-        num1 = String(result);
-        num2 = undefined;  
+        doAfterGettingResult(result,'operator');
     }
     operator = value;
     operatorState = true; 
@@ -159,11 +156,7 @@ function handlesEquals(){
     num1 = parseToNum(num1);
     num2 = parseToNum(num2); 
     result = calculateResult(operator, num1, num2);
-    showOnScreen(result);
-    console.log(result);
-    num1 = num2 = operator = undefined;
-    operatorState = false; 
-    btnDecSeparator.classList.remove('dot-disabled');
+    doAfterGettingResult(result, 'equals');
 }
 
 function handlesDecSeparator(value){
@@ -199,18 +192,35 @@ function calculateResult(operator, num1, num2){
         case '-':
             result = subtract(num1, num2);
             break;
-    }
+    }    
 
-    if (result.toString().length > 10){
-        console.log('long number');
-        result = handlesLongDecimals(result);        
-    } 
-       
     return result;
 }
 
+function doAfterGettingResult(result, opType){
+
+    if (result.toString().length > 12){
+        console.log(`long number ${result}`);
+        result = handlesLongDecimals(result);        
+    } 
+
+    if (opType === "operator"){
+        showOnScreen(result);
+        console.log(result);          
+        num1 = String(result);
+        num2 = undefined; 
+
+    } else {
+        showOnScreen(result);
+        console.log(result);
+        num1 = num2 = operator = undefined;
+        operatorState = false; 
+        btnDecSeparator.classList.remove('dot-disabled');
+    }
+}
+
 function handlesLongDecimals(result){
-    return result.toFixed(9);
+    return result.toFixed(12);
 }
 
 function parseToNum(str){
