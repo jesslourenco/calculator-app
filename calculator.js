@@ -90,10 +90,11 @@ function handleButtonClick(value){
             clearScreen();
             handlesReset();
             let text = 'Infinity!';
-            showOnScreen(text);
+            replaceOnScreen(text);
             setTimeout( () => { clearScreen();}, 1000);
             return;
         }
+
     }     
 }
 
@@ -115,31 +116,34 @@ function handlesNumber(value){
         btnDecSeparator.classList.remove('dot-disabled');
         clearScreen();
     }        
-    showOnScreen(value);
+    addToScreen(value);
 }
 
 function handlesOperator(value){
 
     if (!operator){
         num1 = digitsOnScreen.innerHTML;
-    }else if(num1) {
+    }else if(num1 && !operatorState) {
         num2 = digitsOnScreen.innerHTML;
     }
     if (operator && num1 && num2){
         num1 = parseToNum(num1);
         num2 = parseToNum(num2);
-        const result = calculateResult(operator, num1, num2);          
+        const result = calculateResult(operator, num1, num2);
+        handlesReset();
+        replaceOnScreen(result);
+        console.log(result);          
         num1 = String(result);
-        num2 = undefined;  
     }
-
     operator = value;
     operatorState = true; 
 }
 
 function handlesReset(){
     clearScreen();
-    operator = num1 = num2 = undefined;
+    num1 = num2 = operator = undefined;
+    operatorState = false; 
+    btnDecSeparator.classList.remove('dot-disabled');
 }
 
 function handlesDelete(){
@@ -149,26 +153,30 @@ function handlesDelete(){
     }
     digits = digits.slice(0,-1);
     clearScreen();
-    showOnScreen(digits);
+    replaceOnScreen(digits);
 }
 
 function handlesEquals(){
     num2 = digitsOnScreen.innerHTML;
     num1 = parseToNum(num1);
     num2 = parseToNum(num2); 
-    result = calculateResult(operator, num1, num2);
-    num1 = num2 = operator = undefined;
-    operatorState = false; 
-    btnDecSeparator.classList.remove('dot-disabled');
+    const result = calculateResult(operator, num1, num2);
+    handlesReset();
+    replaceOnScreen(result);
+    console.log(result);
 }
 
 function handlesDecSeparator(value){
-    showOnScreen(value);
+    addToScreen(value,'add');
     btnDecSeparator.className += ' dot-disabled';
 }
 
-function showOnScreen(value){
-    digitsOnScreen.innerHTML += value;
+function addToScreen(value){
+        digitsOnScreen.innerHTML += value; 
+}
+
+function replaceOnScreen(value){
+    digitsOnScreen.innerHTML = value;
 }
 
 function calculateResult(operator, num1, num2){
@@ -191,14 +199,18 @@ function calculateResult(operator, num1, num2){
         case '-':
             result = subtract(num1, num2);
             break;
-    }
-    if (result.toString().length > 10){
-        console.log('long number');
-        result = result.toFixed(9);
-    }
-    digitsOnScreen.innerHTML = result;
-    console.log(result);
+    }  
+    
+    if (result.toString().length > 12){
+        console.log(`long number ${result}`);
+        result = handlesLongDecimals(result);        
+    } 
+
     return result;
+}
+
+function handlesLongDecimals(result){
+    return result.toFixed(12);
 }
 
 function parseToNum(str){
