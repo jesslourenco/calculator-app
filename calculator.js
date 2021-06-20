@@ -90,7 +90,7 @@ function handleButtonClick(value){
             clearScreen();
             handlesReset();
             let text = 'Infinity!';
-            showOnScreen(text);
+            replaceOnScreen(text);
             setTimeout( () => { clearScreen();}, 1000);
             return;
         }
@@ -116,7 +116,7 @@ function handlesNumber(value){
         btnDecSeparator.classList.remove('dot-disabled');
         clearScreen();
     }        
-    showOnScreen(value,'add');
+    addToScreen(value);
 }
 
 function handlesOperator(value){
@@ -130,7 +130,10 @@ function handlesOperator(value){
         num1 = parseToNum(num1);
         num2 = parseToNum(num2);
         const result = calculateResult(operator, num1, num2);
-        doAfterGettingResult(result,'operator');
+        handlesReset();
+        replaceOnScreen(result);
+        console.log(result);          
+        num1 = String(result);
     }
     operator = value;
     operatorState = true; 
@@ -138,7 +141,9 @@ function handlesOperator(value){
 
 function handlesReset(){
     clearScreen();
-    operator = num1 = num2 = undefined;
+    num1 = num2 = operator = undefined;
+    operatorState = false; 
+    btnDecSeparator.classList.remove('dot-disabled');
 }
 
 function handlesDelete(){
@@ -148,28 +153,30 @@ function handlesDelete(){
     }
     digits = digits.slice(0,-1);
     clearScreen();
-    showOnScreen(digits);
+    replaceOnScreen(digits);
 }
 
 function handlesEquals(){
     num2 = digitsOnScreen.innerHTML;
     num1 = parseToNum(num1);
     num2 = parseToNum(num2); 
-    result = calculateResult(operator, num1, num2);
-    doAfterGettingResult(result, 'equals');
+    const result = calculateResult(operator, num1, num2);
+    handlesReset();
+    replaceOnScreen(result);
+    console.log(result);
 }
 
 function handlesDecSeparator(value){
-    showOnScreen(value,'add');
+    addToScreen(value,'add');
     btnDecSeparator.className += ' dot-disabled';
 }
 
-function showOnScreen(value, operation='replace'){
-    if(operation === 'add'){
-        digitsOnScreen.innerHTML += value;
-    } else {
-        digitsOnScreen.innerHTML = value;
-    }
+function addToScreen(value){
+        digitsOnScreen.innerHTML += value; 
+}
+
+function replaceOnScreen(value){
+    digitsOnScreen.innerHTML = value;
 }
 
 function calculateResult(operator, num1, num2){
@@ -192,31 +199,14 @@ function calculateResult(operator, num1, num2){
         case '-':
             result = subtract(num1, num2);
             break;
-    }    
-
-    return result;
-}
-
-function doAfterGettingResult(result, opType){
-
+    }  
+    
     if (result.toString().length > 12){
         console.log(`long number ${result}`);
         result = handlesLongDecimals(result);        
     } 
 
-    if (opType === "operator"){
-        showOnScreen(result);
-        console.log(result);          
-        num1 = String(result);
-        num2 = undefined; 
-
-    } else {
-        showOnScreen(result);
-        console.log(result);
-        num1 = num2 = operator = undefined;
-        operatorState = false; 
-        btnDecSeparator.classList.remove('dot-disabled');
-    }
+    return result;
 }
 
 function handlesLongDecimals(result){
