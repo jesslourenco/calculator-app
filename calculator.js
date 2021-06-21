@@ -151,10 +151,15 @@ function handlesReset(){
 
 function handlesDelete(){
     let digits = digitsOnScreen.innerHTML;
+
     if (digits[digits.length-1] === '.'){
         document.getElementById("decimalSeparator").classList.remove('dot-disabled');    
+    } else if (digits[digits.length-2] === '-'){
+        digits = digits.slice(0,-2);
+    } else {
+        digits = digits.slice(0,-1);
     }
-    digits = digits.slice(0,-1);
+    
     clearScreen();
     replaceOnScreen(digits);
 }
