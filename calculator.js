@@ -114,19 +114,27 @@ function getTypeOfValue(value){
 }
 
 function handlesNumber(value){
-    if (operatorState){
+    let digits = digitsOnScreen.innerHTML;
+
+    if (operator && digits[digits.length-1] === '.'){
+        addToScreen(value);
+        operatorState = false;
+    }else if (operatorState){
         operatorState = false;
         btnDecSeparator.classList.remove('dot-disabled');
         clearScreen();
-    }        
-    addToScreen(value);
+        addToScreen(value)
+    } else {    
+        addToScreen(value)
+    }
 }
 
 function handlesOperator(value){
 
     if (!operator){
         num1 = digitsOnScreen.innerHTML;
-    }else if(num1 && !operatorState) {
+        
+    } else if(num1 && !operatorState) {
         num2 = digitsOnScreen.innerHTML;
     }
     if (operator && num1 && num2){
@@ -137,9 +145,12 @@ function handlesOperator(value){
         replaceOnScreen(result);
         console.log(result);          
         num1 = String(result);
+    } else if (operator && num1 && !num2){
+        num2 = digitsOnScreen.innerHTML;
     }
     operator = value;
     operatorState = true; 
+    btnDecSeparator.classList.remove('dot-disabled');
 }
 
 function handlesReset(){
@@ -165,22 +176,33 @@ function handlesDelete(){
 }
 
 function handlesEquals(){
+    if (!operator){
+        return;
+    }
     num2 = digitsOnScreen.innerHTML;
     num1 = parseToNum(num1);
     num2 = parseToNum(num2); 
     const result = calculateResult(operator, num1, num2);
     handlesReset();
     replaceOnScreen(result);
+    if (result.toString().includes('.')){
+        btnDecSeparator.className += ' dot-disabled';
+    }
     console.log(result);
 }
 
 function handlesDecSeparator(value){
-    addToScreen(value,'add');
-    btnDecSeparator.className += ' dot-disabled';
+    if (digitsOnScreen.innerHTML.includes('.') && operatorState){
+        replaceOnScreen(value);
+        btnDecSeparator.className += ' dot-disabled';
+    } else{
+        addToScreen(value);
+        btnDecSeparator.className += ' dot-disabled';
+    }    
 }
 
 function addToScreen(value){
-        digitsOnScreen.innerHTML += value; 
+    digitsOnScreen.innerHTML += value; 
 }
 
 function replaceOnScreen(value){
@@ -220,7 +242,7 @@ function calculateResult(operator, num1, num2){
 }
 
 function handlesLongDecimals(result){
-    return result.toFixed(12);
+    return parseFloat(result.toFixed(10));
 }
 
 function parseToNum(str){
