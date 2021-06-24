@@ -59,9 +59,8 @@ function classicTheme(){
 /// Calculator functions ///
 
 function handleButtonClick(value){
-    console.log(value);
-
-    let valueType = getTypeOfValue(value);     
+    console.log(value); 
+    let valueType = getTypeOfValue(value);  
 
     try{
         switch(valueType){ 
@@ -93,16 +92,20 @@ function handleButtonClick(value){
             replaceOnScreen(text);
             setTimeout( () => { clearScreen();}, 1000);
             return;
-        }
-
+        } 
     }     
 }
 
 function getTypeOfValue(value){
-    const operators = ['x', '/', '+', '-'];
+    const operators = ['x', '/', '+', '-'];        
 
     if (Number.isInteger(parseInt(value)) === true){
-        return 'NUMBER'
+        if (digitsOnScreen.innerHTML.length > 12 && !operator){
+            console.log("Max digits reached")
+            return;
+        } else {
+        return 'NUMBER';
+        }
     } else if (operators.includes(value)){
         return 'OPERATOR'
     } else {
@@ -148,10 +151,15 @@ function handlesReset(){
 
 function handlesDelete(){
     let digits = digitsOnScreen.innerHTML;
+
     if (digits[digits.length-1] === '.'){
         document.getElementById("decimalSeparator").classList.remove('dot-disabled');    
+    } else if (digits[digits.length-2] === '-'){
+        digits = digits.slice(0,-2);
+    } else {
+        digits = digits.slice(0,-1);
     }
-    digits = digits.slice(0,-1);
+    
     clearScreen();
     replaceOnScreen(digits);
 }
@@ -194,14 +202,16 @@ function calculateResult(operator, num1, num2){
             result = multiply(num1, num2);
             break;
         case '+':
+            console.log(`${num1} + ${num2}`);
             result = sum(num1, num2);
+            console.log(result);
             break;
         case '-':
             result = subtract(num1, num2);
             break;
     }  
     
-    if (result.toString().length > 12){
+    if (result.toString().includes('.') && result.toString().length > 12){
         console.log(`long number ${result}`);
         result = handlesLongDecimals(result);        
     } 
